@@ -41,6 +41,12 @@ javac -cp . MyClass.java
   make arquivo
   ```
 
+- Para limpas objetos e saídas anteriores
+
+  ```
+  make clean
+  ```
+
   **IMPORTANTE QUE NÃO HAJA MUDANÇA NOS DIRETÓRIOS PARA UM BOM FUNCIONAMENTO DO PROGRAMA**
 
 #### Padrão para Saída jclasslib:
