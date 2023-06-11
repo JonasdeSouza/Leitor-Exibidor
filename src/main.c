@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <winsock.h>
-#include <string.h>
+#include "../include/header.h"
 
 // Função para ler um valor de 16 bits em formato big-endian
 uint16_t readUInt16(FILE *file)
@@ -26,7 +23,7 @@ void printConstantValue(FILE *file, uint8_t tag);
 
 int main()
 {
-    FILE *file = fopen("MyClass.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
+    FILE *file = fopen("assets/MyClass.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
 
     if (file == NULL)
     {
@@ -138,15 +135,7 @@ void printConstantValue(FILE *file, uint8_t tag)
             printf("Valor: %lf\n", doubleValue);
             break;
         }
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 15:
-        case 16:
-        case 18:
+        case 7 ... 18:
             // Para essas tags, apenas exibir o tipo de constante
             printf("Tipo: %s\n", getMnemonic(tag));
             break;
