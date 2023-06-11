@@ -21,6 +21,9 @@ uint32_t readUInt32(FILE *file)
 
 char *getMnemonic(uint8_t bytecode);
 
+// Função para imprimir o valor da constante de acordo com o tipo de tag
+void printConstantValue(FILE *file, uint8_t tag);
+
 int main()
 {
     FILE *file = fopen("MyClass.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
@@ -47,22 +50,110 @@ int main()
 
     // Ler a quantidade de entradas no pool de constantes
     uint16_t constantPoolCount = readUInt16(file);
+    printf("Quantidade de entradas no pool de constantes: %u\n", constantPoolCount);
 
     char *Mneumonico;
 
     // Iterar sobre as entradas do pool de constantes
     for (uint16_t i = 1; i < constantPoolCount; i++)
     {
+        printf("Constante %u: ", i);
+
         uint8_t tag = fgetc(file);
         Mneumonico = getMnemonic(tag);
 
-        printf("Tag: %.8X, Mneumonico: %s\n", tag, Mneumonico);
+        printf("Tag: %.8X\n", tag);
+
+        if (tag == 5 || tag == 6) 
+        {
+            // Entradas do tipo Long (tag 5) e Double (tag 6) ocupam duas posições no pool de constantes
+            printf("(Ocupa 2 posicoes)\n");
+            ++i;  // Avançar para a próxima posição no pool
+        } else 
+        {
+            printf("(Ocupa 1 posicao)\n");
+        }
+
+        if (tag == 7 || tag == 8 || tag == 9 || tag == 10 || tag == 11 || tag == 12 || tag == 15 || tag == 16 || tag == 18) 
+        {
+            uint16_t index = readUInt16(file);
+            printf("Referencia: #%u ", index);
+            // Adicione o código aqui para imprimir o valor da constante referenciada
+            printf("-> ");
+            printConstantValue(file, tag);
+        } else {
+            // A entrada não faz referência ao pool de constantes, imprimir apenas o valor da constante
+            printConstantValue(file, tag);
+        }
     }
 
     // Fechar o arquivo
     fclose(file);
 
     return 0;
+}
+
+void printConstantValue(FILE *file, uint8_t tag)
+{
+    switch (tag) {
+        case 1: {
+            // Tag Utf8 - ler o tamanho e o valor da string
+            uint16_t length = readUInt16(file);
+            char *value = (char *)malloc(length + 1);
+            fread(value, sizeof(char), length, file);
+            value[length] = '\0';
+            printf("Valor: %s\n", value);
+            free(value);
+            break;
+        }
+        case 3: {
+            // Tag Integer - ler o valor de 32 bits
+            uint32_t value = readUInt32(file);
+            printf("Valor: %u\n", value);
+            break;
+        }
+        case 4: {
+            // Tag Float - ler o valor de 32 bits
+            uint32_t value = readUInt32(file);
+            float floatValue;
+            memcpy(&floatValue, &value, sizeof(float));
+            printf("Valor: %f\n", floatValue);
+            break;
+        }
+        case 5: {
+            // Tag Long - ler o valor de 64 bits
+            uint32_t highBytes = readUInt32(file);
+            uint32_t lowBytes = readUInt32(file);
+            uint64_t value = ((uint64_t)highBytes << 32) | lowBytes;
+            printf("Valor: %llu\n", value);
+            break;
+        }
+        case 6: {
+            // Tag Double - ler o valor de 64 bits
+            uint32_t highBytes = readUInt32(file);
+            uint32_t lowBytes = readUInt32(file);
+            uint64_t value = ((uint64_t)highBytes << 32) | lowBytes;
+            double doubleValue;
+            memcpy(&doubleValue, &value, sizeof(double));
+            printf("Valor: %lf\n", doubleValue);
+            break;
+        }
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 15:
+        case 16:
+        case 18:
+            // Para essas tags, apenas exibir o tipo de constante
+            printf("Tipo: %s\n", getMnemonic(tag));
+            break;
+        default:
+            printf("Tipo: %s\n", getMnemonic(tag));
+            break;
+    }
 }
 
 char *getMnemonic(uint8_t bytecode) {

@@ -1,0 +1,10 @@
+Como rodar:
+
+Digite no CMD os seguintes comandos:
+1- gcc leitor_exibidor.c -o leitor.exe -std=c99 -lws2_32
+
+2- leitor.exe
+
+Caso queira mudar o arquivo .java, será necessário compilar novamente, assim rode o seguinte comando:
+
+1 - javac -cp . MyClass.java
