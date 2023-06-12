@@ -13,6 +13,10 @@
 git clone https://github.com/JonasdeSouza/Leitor-Exibidor.git
 ```
 
+### Slides da apresentação:
+
+[Clique aqui](https://prezi.com/view/pVj6FnOzDl9R0rxx2OsH/)
+
 ## COMO RODAR:
 
 #### Nome do arquivo .class:
