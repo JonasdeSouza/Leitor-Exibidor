@@ -27,7 +27,7 @@ SYS?=default_value_if_not_set_in_environment
 _DEPS = $(HEAD).h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o
+_OBJ = main.o func.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.$(EXT) $(DEPS)
@@ -42,7 +42,7 @@ compile: $(OBJ)
 	@ echo ${dim}Objetos Gerados${reset}
 
 exec: $(OBJ)
-	@ make compile --no-print-directory;
+	@ make compile -s;
 	@ ./$(EXE).out
 
 arquivo: $(OBJ)
