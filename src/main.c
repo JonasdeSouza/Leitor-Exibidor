@@ -2,7 +2,7 @@
 
 int main()
 {
-    FILE *file = fopen("assets/class/Carta.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
+    FILE *file = fopen("assets/class/Interface.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
 
     if (file == NULL)
     {
@@ -22,7 +22,8 @@ int main()
     uint16_t minorVersion = readUInt16(file);
     uint16_t majorVersion = readUInt16(file);
 
-    printf("Versao: %u.%u\n", majorVersion, minorVersion);
+    printf("Minor Version: %u\n", minorVersion);
+    printf("Major Version: %u\n", majorVersion);
 
     // Ler a quantidade de entradas no pool de constantes
     uint16_t constantPoolCount = readUInt16(file);
@@ -49,15 +50,15 @@ int main()
 
     printf("Fields Count: %u\n", readUInt16(file));
 
-    // printf("Fields: %u\n", readUInt16(file)); // TODO, IF 0 Not READ + Typedef
+    // Ler vetor de fields // TODO, IF 0 Not READ + Typedef
 
     printf("Methods Count: %u\n", readUInt16(file));
 
-    // printf("Fields: %u\n", readUInt16(file)); // TODO, IF 0 Not READ + Typedef
+    // Ler vetor de métodos // TODO, IF 0 Not READ + Typedef
 
     printf("Attributes Count: %u\n", readUInt16(file));
 
-    // printf("Fields: %u\n", readUInt16(file)); // TODO, IF 0 Not READ + Typedef
+    // Ler vetor de attributes // TODO, IF 0 Not READ + Typedef
 
     // Fechar o arquivo
     fclose(file);
