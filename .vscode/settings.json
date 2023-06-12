@@ -2,11 +2,13 @@
     "files.associations": {
         "stdint.h": "c",
         "header.h": "c",
-        "structures.h": "c"
+        "structures.h": "c",
+        "attributes.h": "c"
     },
     "cSpell.ignoreWords": [
         "Fieldref",
         "Methodref",
-        "Mneumonico"
+        "Mneumonico",
+        "constantvalue"
     ]
 }

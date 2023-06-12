@@ -3,8 +3,8 @@
 ### Matrículas/Alunos:
 
 - 170105067 Hyago Gabriel Oliveira Figueiredo
-- João
-- Jonas
+- 170121348 João Pedro Queiroz Rodrigues
+- 180076272 Jonas de Souza Fagundes
 - Samuel
 
 ### Clonar repo:

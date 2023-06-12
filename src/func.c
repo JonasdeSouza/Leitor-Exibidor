@@ -77,6 +77,41 @@ uint32_t readUInt32(FILE *file)
     return ntohl(value);
 }
 
+u2 *readInterfaces(FILE *fp, u2 size)
+{
+    u2 *interfaces = malloc(size * sizeof(u2));
+    for (u2 *auxInterfaces = interfaces; auxInterfaces < interfaces + size; auxInterfaces++)
+    {
+        *auxInterfaces = readUInt16(fp);
+    }
+    return interfaces;
+}
+
+field_info *readFields(FILE *fp, u2 fields_count)
+{
+    field_info *fields = (field_info *)malloc(fields_count * sizeof(field_info));
+
+    for (field_info *auxField = fields; auxField < fields + fields_count; auxField++)
+    {
+        auxField->access_flags = readUInt16(fp);
+        auxField->name_index = readUInt16(fp);
+        auxField->descriptor_index = readUInt16(fp);
+        auxField->attributes_count = readUInt16(fp);
+
+        if (auxField->attributes_count > 0)
+        {
+            auxField->attributes = (attribute_info *)malloc(auxField->attributes_count * sizeof(attribute_info));
+
+            for (int i = 0; i < auxField->attributes_count; i++)
+            {
+                
+            }
+        }
+    }
+
+    return fields;
+}
+
 cp_info *readConstantPool(FILE *fp, u2 constant_pool_count)
 {
     cp_info *readConstantPool = (cp_info *)malloc((constant_pool_count - 1) * sizeof(cp_info));
@@ -84,7 +119,7 @@ cp_info *readConstantPool(FILE *fp, u2 constant_pool_count)
     for (aux = readConstantPool; aux < readConstantPool + constant_pool_count - 1; aux++)
     {
         aux->tag = fgetc(fp);
-        printf("TAG: %i \n ", aux->tag);
+        // printf("TAG: %i \n ", aux->tag);
         switch (aux->tag)
         {
         case CONSTANT_Class:
@@ -150,43 +185,6 @@ cp_info *readConstantPool(FILE *fp, u2 constant_pool_count)
         }
     }
     return readConstantPool;
-}
-
-const char *getConstantName(int constant)
-{
-    switch (constant)
-    {
-    case 1:
-        return "CONSTANT_Utf8";
-    case 3:
-        return "CONSTANT_Integer";
-    case 4:
-        return "CONSTANT_Float";
-    case 5:
-        return "CONSTANT_Long";
-    case 6:
-        return "CONSTANT_Double";
-    case 7:
-        return "CONSTANT_Class";
-    case 8:
-        return "CONSTANT_String";
-    case 9:
-        return "CONSTANT_Fieldref";
-    case 10:
-        return "CONSTANT_Methodref";
-    case 11:
-        return "CONSTANT_InterfaceMethodref";
-    case 12:
-        return "CONSTANT_NameAndType";
-    case 15:
-        return "CONSTANT_MethodHandle";
-    case 16:
-        return "CONSTANT_MethodType";
-    case 18:
-        return "CONSTANT_InvokeDynamic";
-    default:
-        return "Constante desconhecida";
-    }
 }
 
 char *getMnemonic(uint8_t bytecode)
