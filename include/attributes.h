@@ -1,5 +1,8 @@
 #include "./header.h"
 
+#ifndef ATTRIBUTE_H
+#define ATTRIBUTE_H
+
 typedef struct ATTRIBUTE_source_file
 {
     u2 attribute_name_index;
@@ -73,3 +76,5 @@ typedef struct TABLE_line_number
     u2 line_number_table_length;
     line_number_tableInfo *info;
 } TABLE_line_number;
+
+#endif

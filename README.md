@@ -5,7 +5,7 @@
 - 170105067 Hyago Gabriel Oliveira Figueiredo
 - 170121348 João Pedro Queiroz Rodrigues
 - 180076272 Jonas de Souza Fagundes
-- Samuel
+- 160144647 Samuel Ferreira Cruvinel
 
 ### Clonar repo:
 
@@ -83,7 +83,7 @@ uint16_t readUInt16(FILE *file);
 
 ```C
 // Função para ler um valor de 32 bits em formato big-endian
-uint32_t readUInt32(FILE *file)
+uint32_t readUInt32(FILE *file);
 ```
 
 ```C

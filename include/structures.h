@@ -6,24 +6,6 @@ typedef uint8_t u1;	 // uint8_t       1 byte  (8 bits)
 typedef uint16_t u2; // uint16_t      2 bytes (16bits)
 typedef uint32_t u4; // uint32_t      4 bytes (32bits)
 
-enum constant_pool_tags
-{
-	CONSTANT_Utf8 = 1,
-	CONSTANT_Integer = 3,
-	CONSTANT_Float = 4,
-	CONSTANT_Long = 5,
-	CONSTANT_Double = 6,
-	CONSTANT_Class = 7,
-	CONSTANT_String = 8,
-	CONSTANT_Fieldref = 9,
-	CONSTANT_Methodref = 10,
-	CONSTANT_InterfaceMethodref = 11,
-	CONSTANT_NameAndType = 12,
-	CONSTANT_MethodHandle = 15,
-	CONSTANT_MethodType = 16,
-	CONSTANT_InvokeDynamic = 18
-};
-
 // _info
 typedef struct attribute_info {
 	u2 attribute_name_index;

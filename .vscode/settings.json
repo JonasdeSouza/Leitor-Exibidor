@@ -3,7 +3,10 @@
         "stdint.h": "c",
         "header.h": "c",
         "structures.h": "c",
-        "attributes.h": "c"
+        "attributes.h": "c",
+        "type_traits": "c",
+        "cmath": "c",
+        "*.tcc": "c"
     },
     "cSpell.ignoreWords": [
         "Fieldref",

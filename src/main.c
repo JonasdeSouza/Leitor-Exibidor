@@ -23,7 +23,8 @@ int main()
     uint16_t majorVersion = readUInt16(file);
 
     printf("Minor Version: %u\n", minorVersion);
-    printf("Major Version: %u\n", majorVersion);
+    printf("Major Version: %u ", majorVersion);
+    getJavaVersion(majorVersion);
 
     // Ler a quantidade de entradas no pool de constantes
     uint16_t constantPoolCount = readUInt16(file);
@@ -33,7 +34,9 @@ int main()
 
     cp_info *resConstantPool = readConstantPool(file, constantPoolCount);
 
-    printf("Access Flags: 0x%.4X\n", readUInt16(file));
+    uint16_t accessFlag = readUInt16(file);
+    printf("Access Flags: 0x%.4X ", accessFlag);
+    decodeAccessFlag(accessFlag);
 
     uint16_t thisClass = readUInt16(file);
     printf("This class: cp_info #%u ", thisClass);
@@ -62,6 +65,8 @@ int main()
 
     // Fechar o arquivo
     fclose(file);
+
+    printConstantPool(resConstantPool, constantPoolCount);
 
     return 0;
 }

@@ -27,7 +27,7 @@ SYS?=default_value_if_not_set_in_environment
 _DEPS = $(HEAD).h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o func.o
+_OBJ = main.o leitor.o exibidor.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: $(SDIR)/%.$(EXT) $(DEPS)
