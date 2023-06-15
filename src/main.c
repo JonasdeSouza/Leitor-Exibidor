@@ -2,7 +2,7 @@
 
 int main()
 {
-    FILE *file = fopen("assets/class/MyClass.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
+    FILE *file = fopen("assets/class/double_aritmetica.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
 
     if (file == NULL)
     {

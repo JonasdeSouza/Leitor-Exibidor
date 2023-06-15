@@ -2,7 +2,7 @@
 
 void decodeAccessFlag(u2 flag)
 {
-    char aux[4];
+    char aux[5];
     sprintf(aux, "%.4x", flag);
 
     switch (aux[3] - '0')
@@ -104,13 +104,13 @@ void getJavaVersion(int version)
         printf("[9]\n");
         break;
     case 52:
-        printf("[8]\n");
+        printf("[1.8]\n");
         break;
     case 51:
-        printf("[7]\n");
+        printf("[1.7]\n");
         break;
     case 50:
-        printf("[6]\n");
+        printf("[1.6]\n");
         break;
     case 49:
         printf("[5]\n");
@@ -157,14 +157,11 @@ void printConstantPool(cp_info aux[], int constant_pool_count)
         {
         case CONSTANT_Class:
             printf("[%i] Class_info\n\tClass name: cp_info #%d <%s>\n\n", i + 1, aux[i].UnionCP.CONSTANT_Class.name_index, aux[aux[i].UnionCP.CONSTANT_Class.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
-            aux[i].UnionCP.CONSTANT_Class.name_index;
             break;
         case CONSTANT_Fieldref:
             printf("[%i] Fieldref_info\n\tClass name: cp_info #%d <%s>\n", i + 1, aux[i].UnionCP.CONSTANT_Fieldref.class_index, aux[aux[aux[i].UnionCP.CONSTANT_Fieldref.class_index - 1].UnionCP.CONSTANT_Class.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
             printf("\tName and type: cp_info #%d <%s : ", aux[i].UnionCP.CONSTANT_Fieldref.name_and_type_index, aux[aux[aux[i].UnionCP.CONSTANT_Fieldref.name_and_type_index - 1].UnionCP.CONSTANT_Class.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
             printf("%s>\n\n", aux[aux[aux[i].UnionCP.CONSTANT_Fieldref.name_and_type_index - 1].UnionCP.CONSTANT_NameAndType.descriptor_index - 1].UnionCP.CONSTANT_UTF8.bytes);
-            aux[i].UnionCP.CONSTANT_Fieldref.class_index;
-            aux[i].UnionCP.CONSTANT_Fieldref.name_and_type_index;
             break;
         case CONSTANT_Methodref:
             printf("[%i] Methodref_info\n\tClass name: cp_info #%d <%s>\n", i + 1, aux[i].UnionCP.CONSTANT_Methodref.class_index, aux[aux[aux[i].UnionCP.CONSTANT_Methodref.class_index - 1].UnionCP.CONSTANT_Class.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
@@ -172,27 +169,27 @@ void printConstantPool(cp_info aux[], int constant_pool_count)
             printf("%s>\n\n", aux[aux[aux[i].UnionCP.CONSTANT_Methodref.name_and_type_index - 1].UnionCP.CONSTANT_NameAndType.descriptor_index - 1].UnionCP.CONSTANT_UTF8.bytes);
             break;
         case CONSTANT_InterfaceMethodref:
-            aux[i].UnionCP.CONSTANT_InterfaceMethodref.class_index;
-            aux[i].UnionCP.CONSTANT_InterfaceMethodref.name_and_type_index;
+            printf("[%i] InterfaceMethodref_info\n\tClass name: cp_info #%d <%s>\n", i + 1, aux[i].UnionCP.CONSTANT_InterfaceMethodref.class_index, aux[aux[aux[i].UnionCP.CONSTANT_InterfaceMethodref.class_index - 1].UnionCP.CONSTANT_Class.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
+            printf("\tName and type: cp_info #%d <%s : ", aux[i].UnionCP.CONSTANT_InterfaceMethodref.name_and_type_index, aux[aux[aux[i].UnionCP.CONSTANT_InterfaceMethodref.name_and_type_index - 1].UnionCP.CONSTANT_Class.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
+            printf("%s>\n\n", aux[aux[aux[i].UnionCP.CONSTANT_InterfaceMethodref.name_and_type_index - 1].UnionCP.CONSTANT_NameAndType.descriptor_index - 1].UnionCP.CONSTANT_UTF8.bytes);
             break;
         case CONSTANT_String:
             printf("[%i] String_info\n\tString: cp_info #%d <%s>\n\n", i + 1, aux[i].UnionCP.CONSTANT_String.string_index, aux[aux[i].UnionCP.CONSTANT_String.string_index - 1].UnionCP.CONSTANT_UTF8.bytes);
-            aux[i].UnionCP.CONSTANT_String.string_index;
             break;
         case CONSTANT_Integer:
             printf("[%i] Integer_info\n\tInteger: %d", i + 1, aux[i].UnionCP.CONSTANT_Integer.bytes);
             break;
         case CONSTANT_Float:
-            printf("[%i] Float_info\n\tFloat: %.2f", i + 1, aux[i].UnionCP.CONSTANT_Float.bytes);
+            printf("[%i] Float_info\n\tFloat: %.2d", i + 1, aux[i].UnionCP.CONSTANT_Float.bytes);
             break;
         case CONSTANT_Long:
             printf("[%i] Long_info\n\tHigh bytes: 0x%x\n", i + 1, aux[i].UnionCP.CONSTANT_Long.high_bytes);
-            printf("\tLow bytes: 0x%x\n", i + 1, aux[i].UnionCP.CONSTANT_Long.low_bytes);
+            printf("\tLow bytes: 0x%x\n", aux[i].UnionCP.CONSTANT_Long.low_bytes);
             printf("\tLong: %lu\n\n", decodeLongInfo(aux[i]));
             break;
         case CONSTANT_Double:
             printf("[%i] Double_info\n\tHigh bytes: 0x%x\n", i + 1, aux[i].UnionCP.CONSTANT_Double.high_bytes);
-            printf("\tLow bytes: 0x%x\n", i + 1, aux[i].UnionCP.CONSTANT_Double.low_bytes);
+            printf("\tLow bytes: 0x%x\n", aux[i].UnionCP.CONSTANT_Double.low_bytes);
             double temp = decodeDoubleInfo(aux[i]);
             printf("\tDouble: %.2f\n\n", temp);
             break;
@@ -208,11 +205,12 @@ void printConstantPool(cp_info aux[], int constant_pool_count)
         case CONSTANT_MethodHandle:
             printf("[%i] MethodHandle_info\n\tReference kind: ", i + 1);
             printRefValue(aux[i].UnionCP.CONSTANT_MethodHandle.reference_kind);
-
-            //to do
-            aux[i].UnionCP.CONSTANT_MethodHandle.reference_index;
+            printf("\tReference index: cp_info #%d <%s.", aux[i].UnionCP.CONSTANT_MethodHandle.reference_index, aux[aux[aux[aux[i].UnionCP.CONSTANT_MethodHandle.reference_index - 1].UnionCP.CONSTANT_Methodref.class_index - 1].UnionCP.CONSTANT_Class.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
+            printf("%s : ", aux[aux[aux[aux[i].UnionCP.CONSTANT_MethodHandle.reference_index - 1].UnionCP.CONSTANT_Methodref.name_and_type_index - 1].UnionCP.CONSTANT_NameAndType.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
+            printf("%s>\n\n", aux[aux[aux[aux[i].UnionCP.CONSTANT_MethodHandle.reference_index - 1].UnionCP.CONSTANT_Methodref.name_and_type_index - 1].UnionCP.CONSTANT_NameAndType.descriptor_index - 1].UnionCP.CONSTANT_UTF8.bytes);
             break;
         case CONSTANT_MethodType:
+            //TODO
             aux[i].UnionCP.CONSTANT_MethodType.descriptor_index;
             break;
         case CONSTANT_InvokeDynamic:

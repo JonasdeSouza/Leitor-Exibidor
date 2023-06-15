@@ -37,7 +37,7 @@ void printConstantValue(FILE *file, uint8_t tag)
         uint32_t highBytes = readUInt32(file);
         uint32_t lowBytes = readUInt32(file);
         uint64_t value = ((uint64_t)highBytes << 32) | lowBytes;
-        printf("Valor: %llu\n", value);
+        printf("Valor: %lu\n", value);
         break;
     }
     case 6:

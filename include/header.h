@@ -30,5 +30,5 @@ cp_info *readConstantPool(FILE *fp, u2 constant_pool_count);
 void decodeAccessFlag(u2 flag);
 void printConstantPool(cp_info aux[], int constant_pool_count);
 void printRefValue(int value);
-
+void getJavaVersion(int version);
 #endif
