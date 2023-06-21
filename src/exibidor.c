@@ -210,7 +210,7 @@ void printConstantPool(cp_info aux[], int constant_pool_count)
             printf("%s>\n\n", aux[aux[aux[aux[i].UnionCP.CONSTANT_MethodHandle.reference_index - 1].UnionCP.CONSTANT_Methodref.name_and_type_index - 1].UnionCP.CONSTANT_NameAndType.descriptor_index - 1].UnionCP.CONSTANT_UTF8.bytes);
             break;
         case CONSTANT_MethodType:
-            //TODO
+            // TODO
             aux[i].UnionCP.CONSTANT_MethodType.descriptor_index;
             break;
         case CONSTANT_InvokeDynamic:
@@ -223,7 +223,25 @@ void printConstantPool(cp_info aux[], int constant_pool_count)
             break;
         }
     }
-    return readConstantPool;
+}
+
+void printMethods(method_info aux[], int methods_count, cp_info cp[])
+{
+    for (int i = 0; i < methods_count; i++)
+    {
+        printf("[%i] %s\n\tName: cp_info #%d <%s>\n", i, cp[aux[i].name_index - 1].UnionCP.CONSTANT_UTF8.bytes, aux[i].name_index, cp[aux[i].name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
+        printf("\tDescriptor: cp_info #%d <%s>\n", aux[i].descriptor_index, cp[aux[i].descriptor_index - 1].UnionCP.CONSTANT_UTF8.bytes);
+        printf("\tAccess Flags: 0x%.4X\n\n", aux[i].access_flags);
+    }
+}
+
+void printAttributes(attribute_info aux[], int attributes_count, cp_info cp[])
+{
+    for (int i = 0; i < attributes_count; i++)
+    {
+        printf("[%i] %s\n\tGeneric info\n\t\tAttribute name index: cp_info #%d <%s>\n", i, cp[aux[i].attribute_name_index - 1].UnionCP.CONSTANT_UTF8.bytes, aux[i].attribute_name_index, cp[aux[i].attribute_name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
+        printf("\t\tAttribute length: %d\n\n", aux[i].attribute_length);
+    }
 }
 
 void printRefValue(int value)

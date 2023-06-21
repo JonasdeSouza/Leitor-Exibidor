@@ -104,7 +104,15 @@ field_info *readFields(FILE *fp, u2 fields_count)
 
             for (int i = 0; i < auxField->attributes_count; i++)
             {
-                
+                auxField->attributes[i].attribute_name_index = readUInt16(fp);
+                auxField->attributes[i].attribute_length = readUInt32(fp);
+
+                auxField->attributes[i].info = (u1 *)malloc(auxField->attributes[i].attribute_length * sizeof(u1));
+
+                for (int j = 0; j < auxField->attributes[i].attribute_length; j++)
+                {
+                    auxField->attributes[i].info[j] = fgetc(fp);
+                }
             }
         }
     }
@@ -185,6 +193,59 @@ cp_info *readConstantPool(FILE *fp, u2 constant_pool_count)
         }
     }
     return readConstantPool;
+}
+
+method_info *readMethods(FILE *fp, u2 methods_count)
+{
+    method_info *methods = (method_info *)malloc(methods_count * sizeof(method_info));
+
+    for (method_info *auxMethod = methods; auxMethod < methods + methods_count; auxMethod++)
+    {
+        auxMethod->access_flags = readUInt16(fp);
+        auxMethod->name_index = readUInt16(fp);
+        auxMethod->descriptor_index = readUInt16(fp);
+        auxMethod->attributes_count = readUInt16(fp);
+
+        if (auxMethod->attributes_count > 0)
+        {
+            auxMethod->attributes = (attribute_info *)malloc(auxMethod->attributes_count * sizeof(attribute_info));
+
+            for (int i = 0; i < auxMethod->attributes_count; i++)
+            {
+                auxMethod->attributes[i].attribute_name_index = readUInt16(fp);
+                auxMethod->attributes[i].attribute_length = readUInt32(fp);
+
+                auxMethod->attributes[i].info = (u1 *)malloc(auxMethod->attributes[i].attribute_length * sizeof(u1));
+
+                for (int j = 0; j < auxMethod->attributes[i].attribute_length; j++)
+                {
+                    auxMethod->attributes[i].info[j] = fgetc(fp);
+                }
+            }
+        }
+    }
+
+    return methods;
+}
+
+attribute_info *readAttributes(FILE *fp, u2 attributes_count)
+{
+    attribute_info *attribute = (attribute_info *)malloc(attributes_count * sizeof(attribute_info));
+
+    for (attribute_info *auxAttribute = attribute; auxAttribute < attribute + attributes_count; auxAttribute++)
+    {
+        auxAttribute->attribute_name_index = readUInt16(fp);
+        auxAttribute->attribute_length = readUInt32(fp);
+
+        auxAttribute->info = (u1 *)malloc(auxAttribute->attribute_length * sizeof(u1));
+
+        for (int j = 0; j < auxAttribute->attribute_length; j++)
+        {
+            auxAttribute->info[j] = fgetc(fp);
+        }
+    }
+
+    return attribute;
 }
 
 char *getMnemonic(uint8_t bytecode)

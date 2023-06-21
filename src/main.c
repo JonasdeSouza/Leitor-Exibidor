@@ -2,7 +2,7 @@
 
 int main()
 {
-    FILE *file = fopen("assets/class/double_aritmetica.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
+    FILE *file = fopen("assets/class/method_test.class", "rb"); // Substitua "Example.class" pelo nome do arquivo .class desejado
 
     if (file == NULL)
     {
@@ -30,8 +30,6 @@ int main()
     uint16_t constantPoolCount = readUInt16(file);
     printf("Quantidade de entradas no pool de constantes: %u\n", constantPoolCount);
 
-    char *Mneumonico;
-
     cp_info *resConstantPool = readConstantPool(file, constantPoolCount);
 
     uint16_t accessFlag = readUInt16(file);
@@ -46,27 +44,31 @@ int main()
     printf("Super class: cp_info #%u ", superClass);
     printf("<%s>\n", resConstantPool[resConstantPool[superClass - 1].UnionCP.CONSTANT_Class.name_index - 1].UnionCP.CONSTANT_UTF8.bytes);
 
+    // Interfaces
     uint16_t interfaceCount = readUInt16(file);
     printf("Interfaces Count: %u\n", interfaceCount);
-
     readInterfaces(file, interfaceCount);
 
-    printf("Fields Count: %u\n", readUInt16(file));
+    // Fields
+    uint16_t fieldsCount = readUInt16(file);
+    printf("Fields Count: %u\n", fieldsCount);
+    readFields(file, fieldsCount);
 
-    // Ler vetor de fields // TODO, IF 0 Not READ + Typedef
+    // Methods
+    uint16_t methodsCount = readUInt16(file);
+    printf("Methods Count: %u\n", methodsCount);
+    method_info *resMethods = readMethods(file, methodsCount);
 
-    printf("Methods Count: %u\n", readUInt16(file));
-
-    // Ler vetor de métodos // TODO, IF 0 Not READ + Typedef
-
-    printf("Attributes Count: %u\n", readUInt16(file));
-
-    // Ler vetor de attributes // TODO, IF 0 Not READ + Typedef
+    // Attributes
+    uint16_t attributesCount = readUInt16(file);
+    printf("Attributes Count: %u\n", attributesCount);
+    attribute_info *resAttributes = readAttributes(file, attributesCount);
 
     // Fechar o arquivo
     fclose(file);
 
-    printConstantPool(resConstantPool, constantPoolCount);
-
+    // printConstantPool(resConstantPool, constantPoolCount);
+    // printMethods(resMethods, methodsCount, resConstantPool); // TODO: printf access flags
+    // printAttributes(resAttributes, attributesCount, resConstantPool); // TODO: printf info/specific info
     return 0;
 }
